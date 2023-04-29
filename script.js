@@ -1,3 +1,11 @@
+let playerScore = 0;
+let computerScore = 0;
+
+const buttons = document.querySelectorAll('button');
+const result = document.querySelector('.result');
+const player = document.querySelector('.player');
+const computer = document.querySelector('.computer');
+
 function getComputerChoice() {
     let choices = ['rock', 'paper', 'scissors'];
 
@@ -12,9 +20,11 @@ function playRound(playerSelection, computerSelection) {
     // Rock
     if (playerSelection == 'rock' && computerSelection == 'scissors') {
         message = 'Rock beats Scissors, you win!';
+        playerScore++;
     }
     if (playerSelection == 'rock' && computerSelection == 'paper') {
         message = 'Paper beats Rock, you lose!';
+        computerScore++;
     }
     if (playerSelection == 'rock' && computerSelection == 'rock') {
         message = 'Draw! you both choose Rock!';
@@ -23,9 +33,11 @@ function playRound(playerSelection, computerSelection) {
     // Paper
     if (playerSelection == 'paper' && computerSelection == 'scissors') {
         message = 'Scissors beats paper, you lose!';
+        computerScore++;
     }
     if (playerSelection == 'paper' && computerSelection == 'rock') {
         message = 'Paper beats Rock, you win!';
+        playerScore++;
     }
     if (playerSelection == 'paper' && computerSelection == 'paper') {
         message = 'Draw! you both choose Paper!';
@@ -37,21 +49,32 @@ function playRound(playerSelection, computerSelection) {
     }
     if (playerSelection == 'scissors' && computerSelection == 'paper') {
         message = 'Scissors beats Paper, you win!';
+        playerScore++;
     }
     if (playerSelection == 'scissors' && computerSelection == 'rock') {
         message = 'Rock beats Scissors, you lose!';
+        computerScore++;
+    }
+
+    updateScore(playerScore, computerScore);
+
+    if (playerScore === 5) {
+        message = 'You win!! gz!';
+    } else if (computerScore === 5) {
+        message = 'You lose... sadly :(';
     }
 
     return message;
 }
 
-function game() {
-    for (let index = 0; index < 5; index++) {
-        let playerSelection = prompt("Make your choice!");
-        const computerSelection = getComputerChoice();
-
-        console.log(playRound(playerSelection, computerSelection));
-    }
+function updateScore(playerScore, computerScore) {
+    player.textContent = playerScore;
+    computer.textContent = computerScore;
 }
 
-game();
+buttons.forEach((button) => {
+    let choice = button.textContent;
+    button.addEventListener('click', function (e) {
+        result.textContent = playRound(choice, getComputerChoice());
+    })
+})
